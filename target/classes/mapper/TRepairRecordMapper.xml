@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.TRepairRecordMapper">
+
+    <select id="getRepairList" resultType="com.msc.user.dto.resp.TRepairRecordResp">
+        SELECT
+            d.id,d.create_time,d.`status`,su.name,su.username,concat(tv.name,th.home_no) houseInfo,d.description
+        FROM
+            t_repair_record d
+            left join sys_user su on su.id = d.sys_user_id
+            left join t_house_info th on th.id = d.house_info_id
+            left join t_village_info tv on tv.id = th.village_id
+        WHERE
+            (sys_user_id = #{userId,jdbcType=INTEGER}
+            OR sys_user_id IN (
+            SELECT
+                id
+            FROM
+                sys_user
+            WHERE
+                EXISTS (
+                SELECT
+                    r.sys_user_id
+                FROM
+                    t_user_house_relation r
+                    INNER JOIN t_house_info h ON r.house_info_id = h.id
+                    INNER JOIN t_user_village_manager t ON t.t_village_id = h.village_id
+                WHERE
+                    r.sys_user_id = sys_user.id
+                    AND t.sys_user_id = #{userId,jdbcType=INTEGER}
+                )
+            )
+          )
+          <if test="id != null">
+              and d.id = #{id,jdbcType=INTEGER}
+          </if>
+        order by d.status asc,d.id desc
+        <if test="page != null and page.start > 0">
+            limit #{page.size} offset #{page.offSet}
+        </if>
+    </select>
+    <select id="getPageCount" resultType="com.msc.common.base.PageEntity">
+        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount from
+        (select
+        count(1) total
+        FROM
+        t_repair_record d
+        left join sys_user su on su.id = d.sys_user_id
+        WHERE
+        (sys_user_id = #{userId,jdbcType=INTEGER}
+        OR sys_user_id IN (
+        SELECT
+        id
+        FROM
+        sys_user
+        WHERE
+        EXISTS (
+        SELECT
+        r.sys_user_id
+        FROM
+        t_user_house_relation r
+        INNER JOIN t_house_info h ON r.house_info_id = h.id
+        INNER JOIN t_user_village_manager t ON t.t_village_id = h.village_id
+        WHERE
+        r.sys_user_id = sys_user.id
+        AND t.sys_user_id = #{userId,jdbcType=INTEGER}
+        )
+        )
+        ))a
+    </select>
+</mapper>

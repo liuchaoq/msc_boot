@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.SysUserMapper">
+
+    <update id="updateUserSubStatus">
+        update sys_user set disabled = 1 where open_id = #{user.openid,jdbcType=VARCHAR}
+    </update>
+    <update id="resetPassword">
+        update sys_user set password = #{user.password,jdbcType=VARCHAR} where id = #{user.id} or id = #{user.oId}
+    </update>
+    <update id="updatePassword">
+        update sys_user set password = #{user.password} where id = #{user.id}
+        and password is null
+    </update>
+    <select id="login" resultMap="loginMap">
+        select su.id su_id,su.name,su.open_id,su.username,su.head,sm.name menu_name,sm.id,sm.parent_id,su.password,sm.router,sm.is_main_menu,sm.main_menu_id from sys_user su
+        left join sys_user_role sur on sur.sys_user_id = su.id and sur.disabled = 1
+        left join sys_role_menu srm on srm.sys_role_id = sur.sys_role_id and srm.disabled = 1
+        left join sys_menu sm on sm.id = srm.sys_menu_id and sm.disabled = 1
+		where su.username = #{params.code,jdbcType=VARCHAR}
+		and su.disabled = 1
+    </select>
+    <select id="getUserPage" resultType="com.msc.user.entity.SysUser">
+        select su.id,su.username,case when su.password is not null and su.password != '' then '系统用户' else '普通用户' end user_type,
+        name,su.sub_time from sys_user su
+        where 1 = 1
+        <if test="userId != null">
+            and su.house_id in (
+            select t.id
+            from t_house_info t
+            inner join t_village_info t1 on t1.id = t.village_id
+            inner join t_user_village_manager t2 on t1.id = t2.t_village_id
+            where t2.sys_user_id = #{userId,jdbcType=INTEGER}
+            )
+        </if>
+        order by su.id asc
+        <if test="page != null and page.start > 0">
+            limit #{page.size} offset #{page.offSet}
+        </if>
+    </select>
+    <select id="getPageCount" resultType="com.msc.common.base.PageEntity">
+        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount
+        from
+        (select count(1) total
+        from sys_user su
+        where 1 = 1
+        <if test="userId != null">
+            and su.house_id in (
+            select t.id
+            from t_house_info t
+            inner join t_village_info t1 on t1.id = t.village_id
+            inner join t_user_village_manager t2 on t1.id = t2.t_village_id
+            where t2.sys_user_id = #{userId,jdbcType=INTEGER}
+            )
+        </if>)a
+    </select>
+    <select id="getUserById" resultType="com.msc.user.entity.SysUser">
+        select su.id,su.username,su.name,su.sub_time,
+        CONCAT(IFNULL( t2.area_name, '' ),IFNULL ( t1.NAME, '' ),IFNULL ( t.home_no, '' )) address,
+        t3.roleNameStr "role_name_str"
+        from sys_user su
+        left join t_house_info t on t.id = su.house_id
+        left join t_village_info t1 on t.village_id = t1.id
+        left join sys_zone t2 on t1.town_code = t2.code
+        left join (select GROUP_CONCAT(sr.name,',') roleNameStr,sur.sys_user_id uId
+            from sys_role sr join sys_user_role sur on sr.id = sur.sys_role_id
+            where sur.sys_user_id = #{userId,jdbcType=INTEGER}
+            group by sur.sys_user_id
+            ) t3 on t3.uId = su.id
+        where 1 = 1
+        <if test="managerId != null">
+            and su.house_id in (
+            select t.id
+            from t_house_info t
+            inner join t_village_info t1 on t1.id = t.village_id
+            inner join t_user_village_manager t2 on t1.id = t2.t_village_id
+            where t2.sys_user_id = #{managerId,jdbcType=INTEGER}
+            )
+        </if>
+        and su.id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="getUserAddress" resultType="com.msc.user.dto.UserAddressDTO">
+        select t.sys_user_id uid,p.area_name province,c.area_name city,a.area_name area,tn.area_name town,
+        t2.name village,t1.home_no
+        from t_user_house_relation t
+        inner join t_house_info t1 on t.house_info_id = t1.id
+        left join t_village_info t2 on t2.id = t1.village_id
+        left join sys_zone p on p.code = t2.province_code
+		left join sys_zone c on c.code = t2.city_code
+		left join sys_zone a on a.code = t2.area_code
+		left join sys_zone tn on tn.code = t2.town_code
+		where t.sys_user_id in 
+		<foreach collection="userIds" index="index" separator="," item="userId" close=")" open="(">
+            #{userId,jdbcType=INTEGER}
+        </foreach>
+    </select>
+    <select id="getMyAddressInfos" resultType="com.msc.user.dto.UserAddressDTO">
+        SELECT
+            t.id,
+            t1.id houseId,
+            t2.`name` village,
+            t1.home_no AS homeNo,
+            p.area_name AS province,
+            a.area_name AS area,
+            c.area_name AS city,
+            tw.area_name AS town
+        FROM
+            t_user_house_relation t
+            INNER JOIN t_house_info t1 ON t1.id = t.house_info_id
+            INNER JOIN t_village_info t2 ON t1.village_id = t2.id
+            LEFT JOIN sys_zone p ON p.CODE = t2.province_code
+            LEFT JOIN sys_zone c ON c.CODE = t2.city_code
+            LEFT JOIN sys_zone tw ON tw.CODE = t2.town_code
+            LEFT JOIN sys_zone a ON a.CODE = t2.area_code
+        WHERE
+            t.sys_user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="getFamilyMember" resultType="com.msc.user.dto.UserDTO">
+        SELECT
+            su.name,
+            CONCAT(SUBSTR(su.username,1,7),'****') username,
+            su.head
+        FROM
+            t_user_house_relation t
+            LEFT JOIN sys_user su ON su.id = t.sys_user_id
+        WHERE
+            t.house_info_id in ( SELECT house_info_id FROM t_user_house_relation WHERE sys_user_id = #{user.id,jdbcType=INTEGER} )
+            AND su.id != #{user.id,jdbcType=INTEGER}
+    </select>
+    <select id="getManagerByHouseInfoId" resultType="com.msc.user.entity.SysUser">
+        select * from sys_user su
+        where exists (select (1) from t_user_village_manager t
+            inner join t_village_info tv on tv.id = t.t_village_id
+            inner join t_house_info th on th.village_id = tv.id and th.id = #{houseInfoId,jdbcType=INTEGER}
+            where t.sys_user_id = su.id
+            )
+    </select>
+    <resultMap id="loginMap" type="com.msc.user.dto.LoginDTO" >
+        <result column="su_id" property="id"></result>
+        <result column="name" property="name"></result>
+        <result column="password" property="password"></result>
+        <result column="username" property="username"></result>
+        <result column="head" property="head"></result>
+        <result column="open_id" property="openId"></result>
+        <collection property="menuList" ofType="com.msc.user.entity.SysMenu">
+            <result property="name" column="menu_name"></result>
+            <result property="id" column="id"></result>
+            <result property="parentId" column="parent_id"></result>
+            <result property="router" column="router"></result>
+            <result property="isMainMenu" column="is_main_menu"></result>
+            <result property="mainMenuId" column="main_menu_id"></result>
+        </collection>
+    </resultMap>
+</mapper>

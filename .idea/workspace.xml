@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="50f50dbd-368f-4b20-8ded-34569c7d2142" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="C:\Users\user\.m2\repository" />
+        <option name="mavenHome" value="$USER_HOME$/apache-maven-3.6.0" />
+        <option name="userSettingsFile" value="C:\Users\user\apache-maven-3.6.0\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2AJmCovGTZJTRBVPfEKVxh4pKTT" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="foldersAlwaysOnTop" value="false" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/msc/user/entity" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="editing.templates" />
+  </component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\msc_boot\src\main\java\com\msc\user\entity" />
+      <recent name="D:\msc_boot\src\main\java\com\msc\common\weixin\wxpay" />
+      <recent name="D:\msc_boot\src\main\java\com\msc\common\weixin\entity" />
+      <recent name="D:\msc_boot\src\main\resources\mapper" />
+      <recent name="D:\msc_boot\src\main\java\com\msc\user\mapper" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.msc.user.entity" />
+      <recent name="" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.msc.user.dto.req" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.WxPrePayReq">
+    <configuration name="AesEncryptUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.msc.common.util.encryption.AesEncryptUtil" />
+      <module name="msc_boot" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.msc.common.util.encryption.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Atest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.msc.common.util.Atest" />
+      <module name="msc_boot" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.msc.common.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GeneratorMySelf (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.bosideng.generator.GeneratorMySelf" />
+      <module name="msc_boot" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bosideng.generator.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TOrder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.msc.user.entity.TOrder" />
+      <module name="msc_boot" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.msc.user.entity.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WxPrePayReq" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.msc.common.weixin.entity.pay.WxPrePayReq" />
+      <module name="msc_boot" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.msc.common.weixin.entity.pay.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MscUserApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="false">
+      <module name="msc_boot" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.msc.MscUserApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="false">
+      <module name="msc_boot" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.msc.MscUserApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.WxPrePayReq" />
+        <item itemvalue="Application.GeneratorMySelf (1)" />
+        <item itemvalue="Application.AesEncryptUtil" />
+        <item itemvalue="Application.TOrder" />
+        <item itemvalue="Application.Atest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="50f50dbd-368f-4b20-8ded-34569c7d2142" name="Default Changelist" comment="" />
+      <created>1654735937100</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654735937100</updated>
+      <workItem from="1654735938648" duration="10835000" />
+      <workItem from="1654753933441" duration="7707000" />
+      <workItem from="1654822635370" duration="7990000" />
+      <workItem from="1655086302856" duration="8065000" />
+      <workItem from="1655167428994" duration="687000" />
+      <workItem from="1655252938641" duration="20226000" />
+      <workItem from="1655341441844" duration="10189000" />
+      <workItem from="1655426673279" duration="16107000" />
+      <workItem from="1655686214630" duration="10990000" />
+      <workItem from="1655772732152" duration="9325000" />
+      <workItem from="1655857867108" duration="11376000" />
+      <workItem from="1655944581305" duration="13394000" />
+      <workItem from="1656032280341" duration="9431000" />
+      <workItem from="1656291933571" duration="5944000" />
+      <workItem from="1656376782795" duration="13427000" />
+      <workItem from="1656463541013" duration="21296000" />
+      <workItem from="1656550850973" duration="17163000" />
+      <workItem from="1656641435851" duration="9014000" />
+      <workItem from="1656894939666" duration="1809000" />
+      <workItem from="1656981856389" duration="6105000" />
+      <workItem from="1657068144351" duration="17550000" />
+      <workItem from="1657155551251" duration="14376000" />
+      <workItem from="1657241284472" duration="14708000" />
+      <workItem from="1657507575745" duration="6505000" />
+      <workItem from="1657587768336" duration="15065000" />
+      <workItem from="1657674346728" duration="10232000" />
+      <workItem from="1657759760026" duration="3177000" />
+      <workItem from="1657806342649" duration="7593000" />
+      <workItem from="1657861802897" duration="5115000" />
+      <workItem from="1658110067492" duration="12676000" />
+      <workItem from="1658191699005" duration="13674000" />
+      <workItem from="1658365945310" duration="18256000" />
+      <workItem from="1658451607837" duration="6729000" />
+      <workItem from="1658711716167" duration="14477000" />
+      <workItem from="1658798264765" duration="10675000" />
+      <workItem from="1658821967997" duration="3937000" />
+      <workItem from="1658883582808" duration="11794000" />
+      <workItem from="1658973680465" duration="9572000" />
+      <workItem from="1659071778793" duration="7684000" />
+      <workItem from="1659314726392" duration="10492000" />
+      <workItem from="1659404379526" duration="9278000" />
+      <workItem from="1659490248132" duration="1230000" />
+      <workItem from="1659574583541" duration="10626000" />
+      <workItem from="1659660596332" duration="2856000" />
+      <workItem from="1659922792543" duration="4228000" />
+      <workItem from="1660005817844" duration="1220000" />
+      <workItem from="1660092470646" duration="629000" />
+      <workItem from="1660179500549" duration="2605000" />
+      <workItem from="1660265069589" duration="1232000" />
+      <workItem from="1660524202925" duration="641000" />
+      <workItem from="1660611604180" duration="638000" />
+      <workItem from="1660697157369" duration="1318000" />
+      <workItem from="1660783502571" duration="675000" />
+      <workItem from="1660869819966" duration="1023000" />
+      <workItem from="1661129083017" duration="1926000" />
+      <workItem from="1661215745471" duration="628000" />
+      <workItem from="1661302909945" duration="1210000" />
+      <workItem from="1661388396013" duration="671000" />
+      <workItem from="1661474970573" duration="663000" />
+      <workItem from="1662622361598" duration="635000" />
+      <workItem from="1667266912752" duration="5081000" />
+      <workItem from="1667349907584" duration="1544000" />
+      <workItem from="1667460693702" duration="2487000" />
+      <workItem from="1667522808724" duration="1306000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="574" y="114" key="#com.intellij.ide.util.MemberChooser" timestamp="1659596432632">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state x="574" y="114" key="#com.intellij.ide.util.MemberChooser/0.0.1536.816@0.0.1536.816" timestamp="1659596432632" />
+    <state width="468" height="438" key="DebuggerActiveHint" timestamp="1659661584298">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="468" height="438" key="DebuggerActiveHint/0.0.1536.816@0.0.1536.816" timestamp="1659661584298" />
+    <state width="1493" height="221" key="GridCell.Tab.0.bottom" timestamp="1667467661426">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.0.bottom/0.0.1536.816@0.0.1536.816" timestamp="1667467661426" />
+    <state width="1493" height="221" key="GridCell.Tab.0.center" timestamp="1667467661425">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.0.center/0.0.1536.816@0.0.1536.816" timestamp="1667467661425" />
+    <state width="1493" height="221" key="GridCell.Tab.0.left" timestamp="1667467661425">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.0.left/0.0.1536.816@0.0.1536.816" timestamp="1667467661425" />
+    <state width="1493" height="221" key="GridCell.Tab.0.right" timestamp="1667467661425">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1493" height="221" key="GridCell.Tab.0.right/0.0.1536.816@0.0.1536.816" timestamp="1667467661425" />
+    <state width="1180" height="264" key="GridCell.Tab.1.bottom" timestamp="1667295090784">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1180" height="264" key="GridCell.Tab.1.bottom/0.0.1536.816@0.0.1536.816" timestamp="1667295090784" />
+    <state width="1180" height="264" key="GridCell.Tab.1.center" timestamp="1667295090783">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1180" height="264" key="GridCell.Tab.1.center/0.0.1536.816@0.0.1536.816" timestamp="1667295090783" />
+    <state width="1180" height="264" key="GridCell.Tab.1.left" timestamp="1667295090783">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1180" height="264" key="GridCell.Tab.1.left/0.0.1536.816@0.0.1536.816" timestamp="1667295090783" />
+    <state width="1180" height="264" key="GridCell.Tab.1.right" timestamp="1667295090784">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1180" height="264" key="GridCell.Tab.1.right/0.0.1536.816@0.0.1536.816" timestamp="1667295090784" />
+    <state width="1180" height="264" key="GridCell.Tab.2.bottom" timestamp="1659661645593">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1180" height="264" key="GridCell.Tab.2.bottom/0.0.1536.816@0.0.1536.816" timestamp="1659661645593" />
+    <state width="1180" height="264" key="GridCell.Tab.2.center" timestamp="1659661645593">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1180" height="264" key="GridCell.Tab.2.center/0.0.1536.816@0.0.1536.816" timestamp="1659661645593" />
+    <state width="1180" height="264" key="GridCell.Tab.2.left" timestamp="1659661645591">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1180" height="264" key="GridCell.Tab.2.left/0.0.1536.816@0.0.1536.816" timestamp="1659661645591" />
+    <state width="1180" height="264" key="GridCell.Tab.2.right" timestamp="1659661645593">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state width="1180" height="264" key="GridCell.Tab.2.right/0.0.1536.816@0.0.1536.816" timestamp="1659661645593" />
+    <state x="468" y="111" width="860" height="594" key="find.popup" timestamp="1660194877682">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state x="468" y="111" width="860" height="594" key="find.popup/0.0.1536.816@0.0.1536.816" timestamp="1660194877682" />
+    <state x="431" y="137" width="672" height="678" key="search.everywhere.popup" timestamp="1658988582534">
+      <screen x="0" y="0" width="1536" height="816" />
+    </state>
+    <state x="431" y="137" width="672" height="678" key="search.everywhere.popup/0.0.1536.816@0.0.1536.816" timestamp="1658988582534" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/service/impl/SysUserServiceImpl.java</url>
+          <line>70</line>
+          <properties class="com.msc.user.service.impl.SysUserServiceImpl" method="getServiceByType">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/service/SysUserService.java</url>
+          <line>26</line>
+          <properties class="com.msc.user.service.SysUserService" method="test">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/mapper/SysUserMapper.java</url>
+          <line>29</line>
+          <properties class="com.msc.user.mapper.SysUserMapper" method="login" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/service/impl/SysMenuServiceImpl.java</url>
+          <line>40</line>
+          <properties class="com.msc.user.service.impl.SysMenuServiceImpl" method="getMenuList">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/service/SysMenuService.java</url>
+          <line>13</line>
+          <properties class="com.msc.user.service.SysMenuService" method="getMenuList">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/service/impl/WxServiceImpl.java</url>
+          <line>78</line>
+          <properties class="com.msc.user.service.impl.WxServiceImpl" method="getOpenId">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/Controller/SysMenuController.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/service/impl/SysMenuServiceImpl.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/Controller/AliCloudOSSController.java</url>
+          <line>34</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/service/impl/WxWaterManagerServiceImpl.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/Controller/WeiXinController.java</url>
+          <line>277</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/Controller/SysUserController.java</url>
+          <line>140</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/Controller/WeiXinUserController.java</url>
+          <line>311</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/service/impl/TVillageInfoServiceImpl.java</url>
+          <line>119</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/msc/user/Controller/WeiXinUserController.java</url>
+          <line>186</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

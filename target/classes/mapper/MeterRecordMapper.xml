@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.MeterRecordMapper">
+
+    <select id="getRecordsByManger" resultType="com.msc.user.dto.resp.MeterListResp">
+        SELECT
+            mr.id,
+            mr.amount,
+            mr.create_time,
+            mr.use_count,
+            mr.pay_staus,
+            CONCAT( area.area_name, town.area_name, tv.`name`, th.home_no ) address,
+            t2.members
+        FROM
+            meter_record mr
+            INNER JOIN t_user_village_manager tm ON mr.village_id = tm.t_village_id
+            AND tm.sys_user_id = #{page.params.userId,jdbcType=INTEGER}
+            INNER JOIN t_village_info tv ON tv.id = mr.village_id
+            INNER JOIN t_house_info th ON th.id = mr.house_id
+            INNER JOIN sys_zone town ON town.CODE = tv.town_code
+            INNER JOIN sys_zone area ON area.CODE = tv.area_code
+            LEFT JOIN (
+            SELECT
+                t.house_info_id,
+                GROUP_CONCAT( COALESCE ( t1.NAME, t1.username ), ',' ) members
+            FROM
+                t_user_house_relation t
+                INNER JOIN sys_user t1 ON t.sys_user_id = t1.id
+            GROUP BY
+                t.house_info_id
+            ) t2 ON t2.house_info_id = th.id
+        WHERE
+            1 = 1
+            <if test="page.params.homeNo != null and page.params.homeNo != ''">
+                and th.home_no like concat('%',#{page.params.homeNo},'%')
+            </if>
+            <if test="page.params.userName != null and page.params.userName != ''">
+                and t2.members like concat('%',#{page.params.userName},'%')
+            </if>
+            <if test="page.params.villageName != null and page.params.villageName != ''">
+                and tv.name like concat('%',#{page.params.villageName},'%')
+            </if>
+            <if test="page.params.year != null">
+                and mr.`year` = #{page.params.year}
+            </if>
+            <if test="page.params.month != null">
+                and mr.`month` = #{page.params.month}
+            </if>
+            <if test="page.params.payStatus != null and page.params.payStatus != ''">
+                and mr.pay_staus = #{page.params.payStatus}
+            </if>
+        ORDER BY
+            mr.pay_staus ASC,tv.NAME ASC
+            <if test="page.start > 0">
+                limit #{page.size} offset #{page.offSet}
+            </if>
+    </select>
+    <select id="getPageCount" resultType="INTEGER">
+        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount from
+        (select
+        count(1) total
+        FROM
+        meter_record mr
+        INNER JOIN t_user_village_manager tm ON mr.village_id = tm.t_village_id
+        AND tm.sys_user_id = #{page.params.userId,jdbcType=INTEGER}
+        INNER JOIN t_village_info tv ON tv.id = mr.village_id
+        INNER JOIN t_house_info th ON th.id = mr.house_id
+        INNER JOIN sys_zone town ON town.CODE = tv.town_code
+        INNER JOIN sys_zone area ON area.CODE = tv.area_code
+        LEFT JOIN (
+        SELECT
+        t.house_info_id,
+        GROUP_CONCAT( COALESCE ( t1.NAME, t1.username ), ',' ) members
+        FROM
+        t_user_house_relation t
+        INNER JOIN sys_user t1 ON t.sys_user_id = t1.id
+        GROUP BY
+        t.house_info_id
+        ) t2 ON t2.house_info_id = th.id
+        WHERE
+        1 = 1
+        <if test="page.params.homeNo != null and page.params.homeNo != ''">
+            and th.home_no like concat('%',#{page.params.homeNo},'%')
+        </if>
+        <if test="page.params.userName != null">
+            and t2.members like concat('%',#{page.params.userName},'%')
+        </if>
+        <if test="page.params.villageName != null">
+            and tv.name like concat('%',#{page.params.villageName},'%')
+        </if>
+        <if test="page.params.year != null">
+            and mr.`year` = #{page.params.year}
+        </if>
+        <if test="page.params.month != null">
+            and mr.`month` = #{page.params.month}
+        </if>
+        <if test="page.params.payStatus != null">
+            and mr.pay_staus = #{page.params.payStatus}
+        </if>)a
+    </select>
+    <select id="getPieData" resultType="java.util.HashMap">
+        SELECT
+            ti.name,
+            SUM(
+            COALESCE ( mr.amount, 0 )) value
+        FROM
+            t_village_info ti
+            INNER JOIN t_user_village_manager tm ON tm.t_village_id = ti.id
+                AND tm.sys_user_id = #{params.userId,jdbcType=INTEGER}
+            left join meter_record mr ON tm.t_village_id = mr.village_id
+                AND mr.YEAR = #{params.year,jdbcType=INTEGER}
+            <if test="params.month != null and params.month != ''">
+                AND mr.`month` = #{params.month,jdbcType=INTEGER}
+            </if>
+        WHERE
+            1 = 1
+        GROUP BY
+            ti.id,
+            ti.NAME
+        ORDER BY
+            ti.id ASC
+    </select>
+    <select id="getAmountData" resultType="java.util.HashMap">
+        SELECT
+            mr.`month`,
+            SUM(
+            COALESCE ( mr.amount, 0 )) ys,
+            SUM(case mr.pay_staus when 1 then mr.amount else 0 end) ss
+        FROM
+            meter_record mr
+            INNER JOIN t_user_village_manager tm ON tm.t_village_id = mr.village_id
+            AND tm.sys_user_id = #{params.userId,jdbcType=INTEGER}
+        WHERE
+            mr.YEAR = #{params.year,jdbcType=INTEGER}
+        GROUP BY
+            mr.`month`
+        ORDER BY
+            mr.month ASC
+    </select>
+    <select id="getMeterRecordsByUser" resultMap="MyRecordsResultMap">
+        SELECT
+            t.*,
+            t2.home_no,
+            t3.amount d_amount,
+            t3.num,
+            t3.num - t3.last_num count,
+            t3.price,
+            t3.pay_staus d_pay_status,
+            t3.id,
+            t3.img,
+            t6.name pay_user,
+            t4.order_code code
+        FROM
+            (
+            SELECT
+                mr.`month`,
+                tr.sys_user_id,
+                SUM( mr.amount ) amount,
+                MIN( mr.pay_staus ) pay_status
+            FROM
+                t_user_house_relation tr
+                INNER JOIN t_house_info ti ON tr.house_info_id = ti.id
+                AND tr.sys_user_id = #{userId,jdbcType=INTEGER}
+                INNER JOIN meter_record mr ON mr.house_id = ti.id
+            WHERE
+                mr.`year` = #{year,jdbcType=INTEGER}
+            GROUP BY
+                mr.`month`,
+                tr.sys_user_id
+            ) t
+            LEFT JOIN t_user_house_relation t1 ON t1.sys_user_id = t.sys_user_id
+            LEFT JOIN t_house_info t2 ON t2.id = t1.house_info_id
+            LEFT JOIN meter_record t3 ON t3.house_id = t2.id
+            LEFT JOIN t_order_product t4 on t4.product_code = t3.product_code and t3.id = t4.product_sku_id
+            LEFT JOIN t_order_payment t5 on t5.order_code = t4.order_code
+            LEFT JOIN sys_user t6 on t5.open_id = t6.open_id
+            AND t3.`month` = t.`month`
+            AND t3.YEAR = #{year,jdbcType=INTEGER}
+        ORDER BY
+            t.`month` ASC
+    </select>
+    <resultMap id="MyRecordsResultMap" type="com.msc.user.dto.resp.MyRecordsResp">
+        <result column="month" property="month"></result>
+        <result column="amount" property="amount"></result>
+        <result column="pay_status" property="payStatus"></result>
+        <collection property="details" ofType="com.msc.user.dto.MyRecordsDetailDto">
+            <result column="home_no" property="homeNo"></result>
+            <result column="d_pay_status" property="payStatus"></result>
+            <result column="id" property="id"></result>
+            <result column="price" property="price"></result>
+            <result column="count" property="count"></result>
+            <result column="num" property="num"></result>
+            <result column="d_amount" property="amount"></result>
+            <result column="img" property="url"></result>
+            <result column="pay_user" property="payUser"></result>
+            <result column="code" property="orderCode"></result>
+        </collection>
+    </resultMap>
+</mapper>

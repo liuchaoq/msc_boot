@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.WhProductMapper">
+
+    <select id="productList" resultMap="productRespMap">
+        SELECT code,product_name,
+        CASE WHEN wp.product_type = 1 THEN
+        '水费' ELSE COALESCE ( wpc.class_name, '普通商品' )
+        END AS 'class',
+        wp.create_time,
+        case when wp.review_status = 0 then '待审核' else case when wp.shelves_status = 0 then '待上架' else '已上架' end end as 'status',
+        wps.id,wps.sell_num,wps.trade_num,wps.sku_price,wps.unit,wpsd.sku_name,wpsd.sku_value
+        FROM
+        wh_product wp
+        LEFT JOIN wh_product_class wpc ON wpc.id = wp.product_class_id
+        LEFT JOIN wh_product_sku wps ON wps.product_code = wp.
+        CODE LEFT JOIN wh_product_sku_detail wpsd ON wpsd.product_sku_id = wps.id
+        where 1 = 1
+        <if test="userId != null">
+            and wp.owner_id = #{userId,jdbcType=INTEGER}
+        </if>
+        <if test="productId != null and productId != 0">
+            and wp.code = #{productCode,jdbcType=INTEGER}
+        </if>
+        order by sm.id asc
+        <if test="page != null and page.start > 0">
+            limit #{page.size} offset #{page.offSet}
+        </if>
+    </select>
+
+    <resultMap id="productRespMap" type="com.msc.user.dto.resp.WhProductResp">
+        <result column="" property="code"></result>
+        <result column="" property="productName"></result>
+        <result column="" property="createTime"></result>
+        <result column="" property="status"></result>
+        <collection property="skuList" ofType="com.msc.user.dto.WhProductSkuDTO">
+            <id column="" property="id"></id>
+            <result column="" property="sellNum"></result>
+            <result column="" property="skuPrice"></result>
+            <result column="" property="tradeNum"></result>
+            <result column="" property="unit"></result>
+            <association property="details" select="getSkuDetail" column="id"></association>
+        </collection>
+    </resultMap>
+</mapper>

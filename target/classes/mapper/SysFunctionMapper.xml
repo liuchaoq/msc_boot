@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.SysFunctionMapper">
+
+    <select id="selectFunction" resultType="com.msc.user.entity.SysFunction">
+        SELECT
+        sm.*
+        FROM
+        sys_function sm
+        <if test="userId != null">
+            INNER JOIN sys_role_function srm ON srm.sys_menu_id = sm.id
+            INNER JOIN sys_user_role sur ON sur.sys_role_id = srm.sys_role_id
+        </if>
+        WHERE 1 = 1
+        <if test="userId != null">
+            sur.sys_user_id = #{userId,jdbcType=INTEGER}
+        </if>
+        <if test="id != null and id != 0">
+            and sm.id = #{id,jdbcType=INTEGER}
+        </if>
+        order by sm.id asc
+        <if test="page != null and page.start > 0">
+            limit #{page.size} offset #{page.offSet}
+        </if>
+    </select>
+    <select id="getPageCount" resultType="com.msc.common.base.PageEntity">
+        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount from
+        (select
+        count(1) total
+        FROM sys_function sm
+        <if test="userId != null">
+            INNER JOIN sys_role_function srm ON srm.sys_menu_id = sm.id
+            INNER JOIN sys_user_role sur ON sur.sys_role_id = srm.sys_role_id
+        </if>
+        WHERE 1 = 1
+        <if test="userId != null">
+            sur.sys_user_id = #{userId,jdbcType=INTEGER}
+        </if>)a
+    </select>
+    <select id="checkState" resultType="com.msc.user.entity.SysFunction">
+        select sf.* from sys_function sf
+        inner join sys_role_function srf on srf.sys_function_id = sf.id
+        inner join sys_user_role sur on sur.sys_role_id = srf.sys_role_id
+        where sur.sys_user_id = #{userId,jdbcType=INTEGER} and sf.id = #{funId,jdbcType=INTEGER}
+    </select>
+    <select id="getRoleNamesByFunctionId" resultType="com.msc.user.entity.SysRole">
+        select sr.* from sys_role sr
+        inner join sys_role_function srf on sr.id = srf.sys_role_id
+        where srf.sys_function_id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="getFunctionsByRoleId" resultType="com.msc.user.entity.SysFunction">
+        select sf.* from sys_function sf
+        inner join sys_role_function srf on sf.id = srf.sys_function_id
+        where srf.sys_role_id = #{id,jdbcType=INTEGER}
+    </select>
+</mapper>

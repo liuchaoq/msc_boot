@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.TOrderMapper">
+    <update id="modifyMeterRecordStatus">
+        update
+            meter_record a,
+            (select product_sku_id from t_order_product where order_code = #{orderCode,jdbcType=VARCHAR}) b
+        set
+            a.pay_staus = #{status,jdbcType=INTEGER},
+            a.update_time = now()
+        where a.id = b.product_sku_id
+    </update>
+
+    <select id="getOrderInfo" resultMap="orderInfoDtoResultMap">
+        SELECT
+            t.CODE,
+            t.order_amount,
+            t.pay_status,
+            t2.name,
+            t3.product_name,
+            t1.*
+        FROM
+            t_order t
+            INNER JOIN t_order_product t1 ON t.CODE = t1.order_code
+            LEFT JOIN sys_user t2 ON t2.id = t.user_id
+            left join wh_product t3 on t3.code = t1.product_code
+        where t.code = #{orderCode,jdbcType=VARCHAR}
+    </select>
+
+    <resultMap id="orderInfoDtoResultMap" type="com.msc.user.dto.OrderInfoDTO">
+        <result property="code" column="code"></result>
+        <result property="payStatus" column="pay_status"></result>
+        <result property="payUserName" column="name"></result>
+        <result property="amount" column="order_amount"></result>
+        <collection ofType="com.msc.user.entity.TOrderProduct" property="productList">
+            <result column="amount" property="amount"></result>
+            <result column="product_code" property="productCode"></result>
+            <result column="product_sku_id" property="productSkuId"></result>
+            <result column="product_sku_count" property="productSkuCount"></result>
+            <result column="product_name" property="productName"></result>
+        </collection>
+    </resultMap>
+</mapper>

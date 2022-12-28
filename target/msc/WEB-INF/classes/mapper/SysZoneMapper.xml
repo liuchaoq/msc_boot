@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.SysZoneMapper">
+
+    <select id="getZoneList" resultType="com.msc.user.entity.SysZone">
+        select * from sys_zone sz
+        where parent_code = #{parentCode,jdbcType=VARCHAR}
+        order by sz.id asc
+        <if test="page != null and page.start > 0">
+            limit #{page.size} offset #{page.offSet}
+        </if>
+    </select>
+    <select id="getPageCount" resultType="com.msc.common.base.PageEntity">
+        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount from
+        (select
+        count(1) total
+        FROM sys_zone sm
+        WHERE parent_code = #{parentCode,jdbcType=VARCHAR})a
+    </select>
+    <select id="getChildrenByParentId" resultType="com.msc.user.entity.SysZone">
+        select * from sys_zone sz
+        where exists (select id from sys_zone psz where psz.id = #{id,jdbcType=INTEGER} and sz.parent_code = psz.code)
+    </select>
+</mapper>
