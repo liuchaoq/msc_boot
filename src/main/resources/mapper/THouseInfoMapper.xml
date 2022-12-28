@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.THouseInfoMapper">
+    <resultMap id="wxHouseResultMap" type="com.msc.user.entity.THouseInfo">
+        <id column="tid" property="id"></id>
+        <result column="home_no" property="homeNo"></result>
+        <association property="meterRecord" column="tid" javaType="com.msc.user.entity.MeterRecord">
+            <result property="lastCopyTime" column="create_time"></result>
+            <result property="lastNum" column="num"></result>
+            <result property="year" column="year"></result>
+            <result property="month" column="month"></result>
+            <result property="isCopy" column="is_copy"></result>
+        </association>
+        <collection property="members" ofType="com.msc.user.entity.SysUser">
+            <result column="username" property="username"></result>
+            <result column="name" property="name"></result>
+        </collection>
+    </resultMap>
+    <update id="updateHomeNo">
+        update t_house_info set home_no = #{houseInfo.homeNo,jdbcType=VARCHAR}
+        where id = #{houseInfo.houseId,jdbcType=INTEGER}
+        and not exist(select (1) from t_house_info where home_no = #{houseInfo.homeNo,jdbcType=VARCHAR})
+    </update>
+
+    <select id="getHouseListByManagerAndVId" resultMap="wxHouseResultMap">
+        select * from (
+        select t.id tid,t.home_no,t4.username,t4.name,t6.*,case when (select MONTH(now())) = t6.`month` then 1 else 0 end is_copy
+        from t_house_info t
+        inner join t_village_info t1 on t.village_id = t1.id and t1.id = #{vId,jdbcType=INTEGER}
+        inner join t_user_village_manager t2 on t2.t_village_id = t1.id and t2.sys_user_id = #{userId,jdbcType=INTEGER}
+        left join t_user_house_relation t3 on t3.house_info_id = t.id
+        left join sys_user t4 on t4.id = t3.sys_user_id
+        left join (select max(id) hid,house_id from meter_record group by house_id) t5 on t5.house_id = t3.house_info_id
+		left join meter_record t6 on t6.id = t5.hid
+        where 1 = 1
+        order by t.home_no asc) a where a.is_copy = 0
+    </select>
+    <select id="getUsersByHouseId" resultType="com.msc.user.entity.SysUser">
+        select su.* from sys_user su
+        inner join t_user_house_relation t on su.id = t.sys_user_id
+            and t.house_info_id = #{houseId,jdbcType=INTEGER}
+    </select>
+</mapper>

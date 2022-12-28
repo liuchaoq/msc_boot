@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.SysMenuMapper">
+
+    <select id="getMenuList" resultType="com.msc.user.entity.SysMenu">
+        SELECT
+        sm.*,s.name p_name
+        FROM
+        sys_menu sm
+        left join sys_menu s on sm.parent_id = s.id
+        <if test="userId != null">
+            INNER JOIN sys_role_menu srm ON srm.sys_menu_id = sm.id
+            INNER JOIN sys_user_role sur ON sur.sys_role_id = srm.sys_role_id
+        </if>
+        WHERE 1 = 1
+        <if test="userId != null">
+            sur.sys_user_id = #{userId,jdbcType=INTEGER}
+        </if>
+        <if test="menuId != null and menuId != 0">
+            and sm.id = #{menuId,jdbcType=INTEGER}
+        </if>
+        <if test="menuId == 0">
+            and sm.parent_id = #{menuId,jdbcType=INTEGER}
+        </if>
+        order by sm.parent_id asc,sm.id asc
+        <if test="page != null and page.start > 0">
+            limit #{page.size} offset #{page.offSet}
+        </if>
+
+    </select>
+    <select id="getPageCount" resultType="com.msc.common.base.PageEntity">
+        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount from
+        (select
+        count(1) total
+        FROM sys_menu sm
+        <if test="userId != null">
+            INNER JOIN sys_role_menu srm ON srm.sys_menu_id = sm.id
+            INNER JOIN sys_user_role sur ON sur.sys_role_id = srm.sys_role_id
+        </if>
+        WHERE 1 = 1
+        <if test="userId != null">
+            sur.sys_user_id = #{userId,jdbcType=INTEGER}
+        </if>)a
+    </select>
+    <select id="getRoleNamesByFunctionId" resultType="com.msc.user.entity.SysRole">
+        select sr.* from sys_role sr
+        inner join sys_role_menu srf on sr.id = srf.sys_role_id
+        where srf.sys_menu_id = #{id,jdbcType=INTEGER}
+    </select>
+</mapper>

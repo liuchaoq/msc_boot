@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.TVillageInfoMapper">
+
+    <select id="getListBySys" resultType="com.msc.user.entity.TVillageInfo">
+        select
+        t.*,
+        CONCAT(IFNULL(p.area_name, ''),IFNULL(c.area_name,''),IFNULL(a.area_name,'')
+            ,IFNULL(t2.area_name,'')) parentName,
+        t5.managerName
+        from t_village_info t
+        <if test="uId != null">
+            inner join t_user_village_manager t1 on t1.t_village_id = t.id
+                and t1.sys_user_id = #{uId,jdbcType=INTEGER}
+        </if>
+        left join sys_zone p on p.code = t.province_code
+        left join sys_zone c on c.code = t.city_code
+        left join sys_zone a on a.code = t.area_code
+        left join sys_zone t2 on t2.code = t.town_code
+        left join (select GROUP_CONCAT(concat(t4.name,'-',t4.username),',') managerName,t3.t_village_id id from t_user_village_manager t3
+            inner join sys_user t4 on t4.id = t3.sys_user_id group by t3.id) t5 on t5.id = t.id
+        where 1 = 1
+        <if test="vId != null">
+            and t.id = #{vId,jdbcType=INTEGER}
+        </if>
+        order by t.id asc
+        <if test="page != null and page.start > 0">
+            limit #{page.size} offset #{page.offSet}
+        </if>
+    </select>
+    <select id="getListBySysCount" resultType="com.msc.common.base.PageEntity">
+        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount
+        from
+        (select count(1) total
+        from t_village_info t
+        <if test="uId != null">
+            inner join t_user_village_manager t1 on t1.t_village_id = t.id
+            and t1.sys_user_id = #{uId,jdbcType=INTEGER}
+        </if>
+        where 1 = 1
+        <if test="vId != null">
+            and t.id = #{vId,jdbcType=INTEGER}
+        </if>)a
+    </select>
+</mapper>

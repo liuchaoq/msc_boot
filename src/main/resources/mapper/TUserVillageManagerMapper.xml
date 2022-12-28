@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.user.mapper.TUserVillageManagerMapper">
+
+    <select id="getManagerVillage" resultType="com.msc.user.dto.resp.UserManagerVillageResp">
+        select
+        t1.name "villageName",
+        t1.id "villageId"
+        from t_user_village_manager t
+        inner join t_village_info t1 on t.t_village_id = t1.id
+        where t.sys_user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="getManagerList" resultType="java.util.HashMap">
+        select
+        concat(t1.name,'-',t1.username) manager
+        from sys_user_role t
+        inner join sys_user t1 on t.sys_user_id = t1.id
+        where t.sys_role_id = #{roleId,jdbcType=INTEGER}
+        <if test="managerId != null">
+            and t.sys_user_id = #{managerId,jdbcType=INTEGER}
+        </if>
+    </select>
+</mapper>
