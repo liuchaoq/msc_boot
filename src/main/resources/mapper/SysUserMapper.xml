@@ -33,6 +33,21 @@
             where t2.sys_user_id = #{userId,jdbcType=INTEGER}
             )
         </if>
+        <if test="page.params.villageId != null and page.params.villageId != ''">
+            and su.house_id in (
+            select t.id
+            from t_house_info t
+            inner join t_village_info t1 on t1.id = t.village_id
+            inner join t_user_village_manager t2 on t1.id = t2.t_village_id
+            where t1.id = #{page.params.villageId}
+            )
+        </if>
+        <if test="page.params.userName != null and page.params.userName != ''">
+            and su.username like concat('%',#{page.params.userName},'%')
+        </if>
+        <if test="page.params.realName != null and page.params.realName != ''">
+            and su.name like concat('%',#{page.params.realName},'%')
+        </if>
         order by su.id asc
         <if test="page != null and page.start > 0">
             limit #{page.size} offset #{page.offSet}
@@ -52,7 +67,23 @@
             inner join t_user_village_manager t2 on t1.id = t2.t_village_id
             where t2.sys_user_id = #{userId,jdbcType=INTEGER}
             )
-        </if>)a
+        </if>
+        <if test="page.params.villageId != null and page.params.villageId != ''">
+            and su.house_id in (
+            select t.id
+            from t_house_info t
+            inner join t_village_info t1 on t1.id = t.village_id
+            inner join t_user_village_manager t2 on t1.id = t2.t_village_id
+            where t1.id = #{page.params.villageId}
+            )
+        </if>
+        <if test="page.params.userName != null and page.params.userName != ''">
+            and su.username like concat('%',#{page.params.userName},'%')
+        </if>
+        <if test="page.params.realName != null and page.params.realName != ''">
+            and su.name like concat('%',#{page.params.realName},'%')
+        </if>
+        )a
     </select>
     <select id="getUserById" resultType="com.msc.user.entity.SysUser">
         select su.id,su.username,su.name,su.sub_time,
