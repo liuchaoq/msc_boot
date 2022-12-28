@@ -1,5 +1,6 @@
 package com.msc.common.base;
 
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +27,7 @@ public class PageEntity {
         try {
             this.start = Integer.parseInt(request.getParameter("start"));
             this.offSet = (this.start-1)*this.size;
+            this.params = JSON.parseObject(request.getParameter("params"));
         } catch (Exception e) {
             log.error("获取分页参数失败！");
         }
