@@ -32,4 +32,7 @@ public class PageEntity {
             log.error("获取分页参数失败！");
         }
     }
+    public PageEntity() {
+
+    }
 }

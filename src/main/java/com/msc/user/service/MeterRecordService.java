@@ -24,4 +24,6 @@ public interface MeterRecordService extends IService<MeterRecord> {
     Result<Object> getRecordsByManger(SysUser sysUser, PageEntity pageEntity);
 
     Result<Object> getMeterRecordsByUser(SysUser sysUser, StatisticsReq statisticsReq);
+
+    Result<Object> offlinePayByManager(SysUser sysUser, int meterRecordId);
 }

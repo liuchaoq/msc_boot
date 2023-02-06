@@ -29,4 +29,6 @@ public interface TOrderMapper extends BaseMapper<TOrder> {
     * @Date: 2022/7/22
     */
     Integer modifyMeterRecordStatus(@Param("orderCode") String code, @Param("status") Integer status);
+
+    TOrder getOrderInfoByMeterId(@Param("meterId") int meterRecordId);
 }

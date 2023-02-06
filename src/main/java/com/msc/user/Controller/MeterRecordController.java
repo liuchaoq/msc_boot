@@ -3,6 +3,7 @@ package com.msc.user.Controller;
 
 import com.msc.common.base.BaseController;
 import com.msc.common.base.PageEntity;
+import com.msc.common.util.encryption.AesEncryptUtil;
 import com.msc.common.vo.Result;
 import com.msc.user.dto.req.MeterReq;
 import com.msc.user.dto.resp.UserManagerVillageResp;
@@ -61,5 +62,16 @@ public class MeterRecordController extends BaseController {
             return Result.error("您无权访问该接口");
         }
         return meterRecordService.getRecordsByManger(sysUser,pageEntity);
+    }
+
+    /**
+     * 管理员手工收费地址
+     * id:抄表记录id
+    **/
+    @GetMapping("wx/offlinePayByManager")
+    public Result<Object> offlinePayByManager(@RequestParam("id") String id) throws Exception {
+        SysUser sysUser = getWxUser();
+        String idStr = AesEncryptUtil.desEncrypt(id, sysUser.getAesData().getKey(), sysUser.getAesData().getIv(),AesEncryptUtil.NO_PADDING);
+        return meterRecordService.offlinePayByManager(sysUser,Integer.parseInt(idStr.trim()));
     }
 }

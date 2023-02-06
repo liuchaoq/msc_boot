@@ -2,12 +2,14 @@ package com.msc.user.service.impl;
 
 import com.msc.common.base.PageEntity;
 import com.msc.common.constant.CmsConstant;
+import com.msc.common.constant.DictConstant;
 import com.msc.common.util.DateUtil;
 import com.msc.common.util.RedisUtil;
 import com.msc.common.util.UUIDGenerator;
 import com.msc.common.vo.Result;
 import com.msc.common.weixin.TemplateMessageUtil;
 import com.msc.common.weixin.TokenUtil;
+import com.msc.common.weixin.WeiXinConstant;
 import com.msc.common.weixin.entity.WxTemplateMessage;
 import com.msc.common.weixin.entity.WxTemplateMessageDetail;
 import com.msc.common.weixin.entity.WxTemplateMessageDetailContent;
@@ -17,10 +19,7 @@ import com.msc.user.dto.req.StatisticsReq;
 import com.msc.user.dto.resp.MeterListResp;
 import com.msc.user.dto.resp.MyRecordsResp;
 import com.msc.user.entity.*;
-import com.msc.user.mapper.MeterRecordMapper;
-import com.msc.user.mapper.THouseInfoMapper;
-import com.msc.user.mapper.TOrderMapper;
-import com.msc.user.mapper.TOrderProductMapper;
+import com.msc.user.mapper.*;
 import com.msc.user.service.MeterRecordService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msc.user.service.WhProductService;
@@ -35,10 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -64,6 +60,9 @@ public class MeterRecordServiceImpl extends ServiceImpl<MeterRecordMapper, Meter
     private TOrderProductMapper tOrderProductMapper;
     @Autowired
     private THouseInfoMapper tHouseInfoMapper;
+    @Autowired
+    private TOrderPaymentMapper tOrderPaymentMapper;
+
     @Value("${tempelet.model.ordernotice}")
     private String orderNoticeTemplateId;
     @Value("${base.system.url}")
@@ -194,5 +193,39 @@ public class MeterRecordServiceImpl extends ServiceImpl<MeterRecordMapper, Meter
             log.error("用户获取水费使用记录失败,用户id:{},错误内容:{}",sysUser.getId(),e.getMessage());
             return Result.error("获取用水记录失败，请重试");
         }
+    }
+
+    @Override
+    public Result<Object> offlinePayByManager(SysUser sysUser, int meterRecordId) {
+        PageEntity pageEntity = new PageEntity();
+        Map<String,Object> params = new HashMap<>();
+        params.put("userId", sysUser.getId());
+        params.put("id",meterRecordId);
+        pageEntity.setParams(params);
+        List<MeterListResp> rows = meterRecordMapper.getRecordsByManger(pageEntity);
+        if (CollectionUtils.isEmpty(rows)) {
+            return Result.ERROR("只有所属管理员可以操作线下收费");
+        }
+        MeterRecord meterRecord = meterRecordMapper.selectById(meterRecordId);
+        meterRecord.setPayStatus(CmsConstant.PAY_STATUS_YES);
+        //将抄表记录状态更新为已收费
+        meterRecordMapper.updateById(meterRecord);
+        //通过抄表记录查找订单产品与订单，更新订单支付状态
+        TOrder tOrder = tOrderMapper.getOrderInfoByMeterId(meterRecordId);
+        tOrder.setPayStatus(CmsConstant.PAY_STATUS_YES);
+        tOrderMapper.updateById(tOrder);
+        //创建支付记录
+        //创建订单支付记录
+        TOrderPayment payment = new TOrderPayment();
+        payment.setAmount(tOrder.getOrderAmount());
+        payment.setOrderCode(tOrder.getCode());
+        payment.setCode(UUIDGenerator.generate());
+        payment.setCreateTime(new Date());
+        payment.setCreateUserId(tOrder.getUserId());
+        payment.setPayStatus(CmsConstant.PAY_STATUS_YES);
+        payment.setOpenId(sysUser.getOpenId());
+        tOrderPaymentMapper.insert(payment);
+
+        return Result.OK("线下支付成功");
     }
 }

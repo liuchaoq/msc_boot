@@ -16,6 +16,10 @@ import java.util.Date;
  **/
 @Data
 public class MeterListResp {
+
+    @ApiModelProperty(value = "抄表记录id")
+    private Integer id;
+
     @ApiModelProperty(value = "住户id")
     private Integer houseId;
 

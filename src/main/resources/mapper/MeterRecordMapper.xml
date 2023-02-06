@@ -8,7 +8,7 @@
             mr.amount,
             mr.create_time,
             mr.use_count,
-            mr.pay_staus,
+            mr.pay_status,
             CONCAT( area.area_name, town.area_name, tv.`name`, th.home_no ) address,
             t2.members
         FROM
@@ -31,6 +31,9 @@
             ) t2 ON t2.house_info_id = th.id
         WHERE
             1 = 1
+            <if test="page.params.id != null and page.params.id != ''">
+                and mr.id = #{page.params.id}
+            </if>
             <if test="page.params.homeNo != null and page.params.homeNo != ''">
                 and th.home_no like concat('%',#{page.params.homeNo},'%')
             </if>
@@ -47,10 +50,10 @@
                 and mr.`month` = #{page.params.month}
             </if>
             <if test="page.params.payStatus != null and page.params.payStatus != ''">
-                and mr.pay_staus = #{page.params.payStatus}
+                and mr.pay_status = #{page.params.payStatus}
             </if>
         ORDER BY
-            mr.pay_staus ASC,tv.NAME ASC
+            mr.pay_status ASC,tv.NAME ASC
             <if test="page.start > 0">
                 limit #{page.size} offset #{page.offSet}
             </if>
@@ -95,7 +98,7 @@
             and mr.`month` = #{page.params.month}
         </if>
         <if test="page.params.payStatus != null">
-            and mr.pay_staus = #{page.params.payStatus}
+            and mr.pay_status = #{page.params.payStatus}
         </if>)a
     </select>
     <select id="getPieData" resultType="java.util.HashMap">
@@ -125,7 +128,7 @@
             mr.`month`,
             SUM(
             COALESCE ( mr.amount, 0 )) ys,
-            SUM(case mr.pay_staus when 1 then mr.amount else 0 end) ss
+            SUM(case mr.pay_status when 1 then mr.amount else 0 end) ss
         FROM
             meter_record mr
             INNER JOIN t_user_village_manager tm ON tm.t_village_id = mr.village_id
@@ -145,7 +148,7 @@
             t3.num,
             t3.num - t3.last_num count,
             t3.price,
-            t3.pay_staus d_pay_status,
+            t3.pay_status d_pay_status,
             t3.id,
             t3.img,
             t6.name pay_user,
@@ -156,7 +159,7 @@
                 mr.`month`,
                 tr.sys_user_id,
                 SUM( mr.amount ) amount,
-                MIN( mr.pay_staus ) pay_status
+                MIN( mr.pay_status ) pay_status
             FROM
                 t_user_house_relation tr
                 INNER JOIN t_house_info ti ON tr.house_info_id = ti.id
