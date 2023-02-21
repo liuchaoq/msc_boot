@@ -233,6 +233,17 @@ public class WeiXinUserController extends BaseController {
     public Result<Object> editHouseInfoFromWx(@RequestBody WxSaveUserReq wxSaveUserReq) {
         return sysUserService.editHouseInfoFromWx(getWxUser(), wxSaveUserReq);
     }
+    @PostMapping("/wx/user/editUserNameFromWx.json")
+    public Result<Object> editUserNameFromWx(@RequestParam String name) {
+        SysUser sysUser = getWxUser();
+        sysUser.setName(name);
+        updateWxUser(sysUser);
+        String key = "MY_INFO_"+sysUser.getOpenId();
+        Map<String,Object> resultMap = (Map<String, Object>) redisUtil.get(key);
+        resultMap.put("name", name);
+        redisUtil.set(key,resultMap, 7200);
+        return sysUserService.updateUserName(sysUser);
+    }
 
     /**
     * @Description: 水站管理员用水、水费收取统计情况，

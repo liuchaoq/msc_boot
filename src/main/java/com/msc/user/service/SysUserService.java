@@ -58,4 +58,6 @@ public interface SysUserService {
     Result<Object> deleteHouseInfo(SysUser user, String houseInfoId);
 
     Result<Object> editHouseInfoFromWx(SysUser wxUser, WxSaveUserReq wxSaveUserReq);
+
+    Result<Object> updateUserName(SysUser sysUser);
 }

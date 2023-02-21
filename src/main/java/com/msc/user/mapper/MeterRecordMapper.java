@@ -32,4 +32,6 @@ public interface MeterRecordMapper extends BaseMapper<MeterRecord> {
     List<HashMap<String, Object>> getAmountData(@Param("params") Map<String, Object> params);
 
     List<MyRecordsResp> getMeterRecordsByUser(@Param("userId") Long userId, @Param("year") Integer year);
+
+    Integer selectCountByRelationId(@Param("relationId") String houseInfoId);
 }

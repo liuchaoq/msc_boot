@@ -14,10 +14,7 @@ import com.msc.user.dto.UserDTO;
 import com.msc.user.dto.req.LoginReq;
 import com.msc.user.dto.req.WxSaveUserReq;
 import com.msc.user.dto.resp.LoginResp;
-import com.msc.user.entity.SysRole;
-import com.msc.user.entity.SysUser;
-import com.msc.user.entity.TRepairRecord;
-import com.msc.user.entity.TUserHouseRelation;
+import com.msc.user.entity.*;
 import com.msc.user.mapper.*;
 import com.msc.user.service.SysRoleService;
 import com.msc.user.service.SysUserService;
@@ -61,6 +58,8 @@ public class SysUserServiceImpl implements SysUserService {
     private THouseInfoMapper tHouseInfoMapper;
     @Autowired
     private TUserHouseRelationMapper tUserHouseRelationMapper;
+    @Autowired
+    private MeterRecordMapper meterRecordMapper;
     @Override
     public SysUser test(@RequestParam(required = true) String content) {
         QueryWrapper<SysUser> wrapper = new QueryWrapper<SysUser>();
@@ -226,6 +225,10 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public Result<Object> deleteHouseInfo(SysUser user, String houseInfoId) {
         Double d = Double.parseDouble(houseInfoId);
+        Integer row = meterRecordMapper.selectCountByRelationId(houseInfoId);
+        if (row > 0) {
+            return Result.error("该住址已产生抄表记录，需删除或修改请联系管理员！");
+        }
         Integer result = tUserHouseRelationMapper.deleteHouseInfo(user.getId(), d.intValue());
         if (result > 0) {
             String key = "MY_INFO_"+user.getOpenId();
@@ -258,5 +261,11 @@ public class SysUserServiceImpl implements SysUserService {
             return Result.error("该门牌号已存在，无法修改");
         }
 
+    }
+
+    @Override
+    public Result<Object> updateUserName(SysUser sysUser) {
+        int result = sysUserMapper.updateUserName(sysUser);
+        return result>0?Result.OK():Result.ERROR("修改失败");
     }
 }

@@ -12,6 +12,9 @@
         update sys_user set password = #{user.password} where id = #{user.id}
         and password is null
     </update>
+    <update id="updateUserName">
+        update sys_user set name = #{user.name} where id = #{user.id}
+    </update>
     <select id="login" resultMap="loginMap">
         select su.id su_id,su.name,su.open_id,su.username,su.head,sm.name menu_name,sm.id,sm.parent_id,su.password,sm.router,sm.is_main_menu,sm.main_menu_id from sys_user su
         left join sys_user_role sur on sur.sys_user_id = su.id and sur.disabled = 1

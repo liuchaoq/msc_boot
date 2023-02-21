@@ -178,9 +178,14 @@
             LEFT JOIN t_order_payment t5 on t5.order_code = t4.order_code
             LEFT JOIN sys_user t6 on t5.open_id = t6.open_id
             AND t3.`month` = t.`month`
-            AND t3.YEAR = #{year,jdbcType=INTEGER}
+        WHERE t3.YEAR = #{year,jdbcType=INTEGER}
         ORDER BY
             t.`month` ASC
+    </select>
+    <select id="selectCountByRelationId" resultType="java.lang.Integer">
+        select count(*) from meter_record mr
+        join t_user_house_relation t on mr.house_id = t.house_info_id
+        where t.id = #{relationId}
     </select>
     <resultMap id="MyRecordsResultMap" type="com.msc.user.dto.resp.MyRecordsResp">
         <result column="month" property="month"></result>

@@ -46,4 +46,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     SysUser getManagerByHouseInfoId(@Param("houseInfoId") Integer houseInfoId);
 
     Integer updatePassword(@Param("user") SysUser sysUser);
+
+    Integer updateUserName(@Param("user") SysUser sysUser);
 }

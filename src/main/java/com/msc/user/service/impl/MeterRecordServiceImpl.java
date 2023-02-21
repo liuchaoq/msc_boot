@@ -208,11 +208,15 @@ public class MeterRecordServiceImpl extends ServiceImpl<MeterRecordMapper, Meter
         }
         MeterRecord meterRecord = meterRecordMapper.selectById(meterRecordId);
         meterRecord.setPayStatus(CmsConstant.PAY_STATUS_YES);
+        meterRecord.setUpdateTime(new Date());
+        meterRecord.setUpdateUserId(sysUser.getId().intValue());
         //将抄表记录状态更新为已收费
         meterRecordMapper.updateById(meterRecord);
         //通过抄表记录查找订单产品与订单，更新订单支付状态
         TOrder tOrder = tOrderMapper.getOrderInfoByMeterId(meterRecordId);
         tOrder.setPayStatus(CmsConstant.PAY_STATUS_YES);
+        tOrder.setUpdateTime(new Date());
+        tOrder.setUpdateUserId(sysUser.getId().intValue());
         tOrderMapper.updateById(tOrder);
         //创建支付记录
         //创建订单支付记录
