@@ -58,8 +58,8 @@
                 limit #{page.size} offset #{page.offSet}
             </if>
     </select>
-    <select id="getPageCount" resultType="INTEGER">
-        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount from
+    <select id="getPageCount" resultType="com.msc.common.base.PageEntity">
+        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount,total from
         (select
         count(1) total
         FROM
@@ -85,10 +85,10 @@
         <if test="page.params.homeNo != null and page.params.homeNo != ''">
             and th.home_no like concat('%',#{page.params.homeNo},'%')
         </if>
-        <if test="page.params.userName != null">
+        <if test="page.params.userName != null and page.params.userName != ''">
             and t2.members like concat('%',#{page.params.userName},'%')
         </if>
-        <if test="page.params.villageName != null">
+        <if test="page.params.villageName != null and page.params.villageName != ''">
             and tv.name like concat('%',#{page.params.villageName},'%')
         </if>
         <if test="page.params.year != null">
@@ -97,7 +97,7 @@
         <if test="page.params.month != null">
             and mr.`month` = #{page.params.month}
         </if>
-        <if test="page.params.payStatus != null">
+        <if test="page.params.payStatus != null and page.params.payStatus != ''">
             and mr.pay_status = #{page.params.payStatus}
         </if>)a
     </select>

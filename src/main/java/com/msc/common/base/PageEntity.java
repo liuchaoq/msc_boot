@@ -21,12 +21,15 @@ public class PageEntity {
     private Integer size = 10;//每页条数
     private Integer pageCount = 1;//总页数
     private Integer offSet = 0;
+    private Integer total;
     private List<?> rows;
     private Map<String, Object> params;
     public PageEntity(HttpServletRequest request) {
         try {
             this.start = Integer.parseInt(request.getParameter("start"));
-            this.offSet = (this.start-1)*this.size;
+            this.size = Integer.parseInt(request.getParameter("pageSize"));
+            this.size = (this.size == null || this.size ==0)?10:this.size;
+            this.offSet = (Integer.parseInt(request.getParameter("start"))-1)*this.size;
             this.params = JSON.parseObject(request.getParameter("params"));
         } catch (Exception e) {
             log.error("获取分页参数失败！");

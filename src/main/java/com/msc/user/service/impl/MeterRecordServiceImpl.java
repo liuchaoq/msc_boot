@@ -173,13 +173,15 @@ public class MeterRecordServiceImpl extends ServiceImpl<MeterRecordMapper, Meter
     @Override
     public Result<Object> getRecordsByManger(SysUser sysUser, PageEntity pageEntity) {
         Map<String,Object> params = pageEntity.getParams();
+        pageEntity.setOffSet((pageEntity.getStart()-1)*pageEntity.getSize());
         params.put("userId", sysUser.getId());
         List<MeterListResp> rows = meterRecordMapper.getRecordsByManger(pageEntity);
         if (CollectionUtils.isEmpty(rows)) {
             pageEntity.setPageCount(0);
         } else {
             pageEntity.setRows(rows);
-            pageEntity.setPageCount(meterRecordMapper.getPageCount(pageEntity));
+//            pageEntity.setPageCount(meterRecordMapper.getPageCount(pageEntity).get(0).getPageCount());
+            pageEntity.setTotal(meterRecordMapper.getPageCount(pageEntity).get(0).getTotal());
         }
         return Result.OK(pageEntity);
     }

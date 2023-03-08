@@ -29,7 +29,7 @@
 
     </select>
     <select id="getPageCount" resultType="com.msc.common.base.PageEntity">
-        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount from
+        select case when mod(total,#{page.size}) > 0 then total/#{page.size} + 1 else total/#{page.size} end pageCount,total from
         (select
         count(1) total
         FROM sys_menu sm

@@ -43,6 +43,7 @@ public class SysMenuServiceImpl implements SysMenuService {
             if (pageEntity != null) {
                 List<PageEntity> list = sysMenuMapper.getPageCount(userId, pageEntity);
                 pageEntity.setPageCount(list.get(0).getPageCount());
+                pageEntity.setTotal(list.get(0).getTotal());
                 pageEntity.setRows(sysMenuMapper.getMenuList(menuId, userId, pageEntity));
                 return Result.OK(pageEntity);
             } else {

@@ -25,7 +25,7 @@ public interface MeterRecordMapper extends BaseMapper<MeterRecord> {
 
     List<MeterListResp> getRecordsByManger(@Param("page") PageEntity pageEntity);
 
-    Integer getPageCount(@Param("page") PageEntity pageEntity);
+    List<PageEntity> getPageCount(@Param("page") PageEntity pageEntity);
 
     List<HashMap<String, Object>> getPieData(@Param("params") Map<String, Object> params);
 
